@@ -6,11 +6,10 @@ Static first prototype for CHEM's JEE Main Chemistry website.
 
 - `index.html`: single-file prototype with home, syllabus, chapter, practice, revision, and progress surfaces
 
-## Publish target
-
-This package is ready to publish on GitHub Pages once authenticated access to the canonical repo is available:
+## Live deployment
 
 - Repo: `https://github.com/ShardOL002/prototypes`
+- GitHub Pages: `https://shardol002.github.io/prototypes/`
 
 ## Notes
 
