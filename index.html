@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CHEM Prototype | JEE Main Chemistry</title>
+  <meta name="description" content="CHEM is a focused JEE Main Chemistry study prototype with syllabus navigation, chapter notes, practice, revision, and progress guidance.">
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #07111f;
+      --panel: rgba(10, 19, 34, 0.88);
+      --panel-strong: #0c1830;
+      --border: rgba(171, 201, 255, 0.16);
+      --text: #eff6ff;
+      --muted: #9ab2d4;
+      --blue: #76b7ff;
+      --cyan: #4fe0d0;
+      --gold: #ffd166;
+      --rose: #ff8cb8;
+      --green: #8ee59b;
+      --shadow: 0 28px 60px rgba(0, 0, 0, 0.35);
+      font-family: Inter, Arial, Helvetica, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+      background:
+        radial-gradient(circle at top, rgba(39, 104, 196, 0.35), transparent 32%),
+        linear-gradient(180deg, #07111f 0%, #08101b 38%, #060b13 100%);
+      color: var(--text);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+    }
+
+    .page {
+      width: min(1120px, calc(100vw - 32px));
+      margin: 0 auto;
+      padding: 20px 0 56px;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 18px;
+      margin: 0 auto 22px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: rgba(4, 11, 21, 0.82);
+      backdrop-filter: blur(16px);
+      box-shadow: var(--shadow);
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .brand strong {
+      font-size: 18px;
+      letter-spacing: 0.08em;
+    }
+
+    .brand span {
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 10px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .nav a {
+      padding: 9px 12px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+    }
+
+    .nav a:hover,
+    .nav a:focus-visible {
+      border-color: var(--border);
+      background: rgba(118, 183, 255, 0.1);
+      outline: none;
+    }
+
+    .hero {
+      display: grid;
+      gap: 18px;
+      grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+      margin-bottom: 18px;
+    }
+
+    .panel {
+      padding: 22px;
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: rgba(79, 224, 208, 0.12);
+      color: var(--cyan);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    p {
+      margin: 0;
+    }
+
+    h1 {
+      font-size: clamp(34px, 6vw, 56px);
+      line-height: 1.02;
+      letter-spacing: -0.04em;
+    }
+
+    h2 {
+      font-size: clamp(26px, 4vw, 34px);
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+    }
+
+    h3 {
+      font-size: 20px;
+      line-height: 1.2;
+    }
+
+    .lead {
+      margin-top: 14px;
+      font-size: 17px;
+      line-height: 1.6;
+      color: #d6e5ff;
+      max-width: 60ch;
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 22px;
+    }
+
+    .cta,
+    .secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 12px 18px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    .cta {
+      background: linear-gradient(135deg, #7ebeff 0%, #4fe0d0 100%);
+      color: #07111f;
+    }
+
+    .secondary {
+      border: 1px solid var(--border);
+      background: rgba(118, 183, 255, 0.08);
+      color: var(--text);
+    }
+
+    .hero-note {
+      margin-top: 18px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .hero-note div {
+      padding: 12px 14px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .hero-side {
+      display: grid;
+      gap: 14px;
+      align-content: start;
+    }
+
+    .stat-grid,
+    .subject-grid,
+    .practice-grid,
+    .revision-grid,
+    .progress-grid,
+    .loop-grid,
+    .footer-grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .stat-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .stat {
+      padding: 16px;
+      border-radius: 20px;
+      background: linear-gradient(180deg, rgba(16, 31, 56, 0.95), rgba(9, 18, 33, 0.95));
+      border: 1px solid var(--border);
+    }
+
+    .stat small,
+    .label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 28px;
+      line-height: 1;
+    }
+
+    .stat p {
+      margin-top: 8px;
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+
+    section {
+      margin-top: 18px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+
+    .section-head p {
+      max-width: 58ch;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .subject-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .subject-card,
+    .loop-card,
+    .progress-card,
+    .practice-card,
+    .revision-card,
+    .chapter-panel,
+    .footer-card {
+      padding: 18px;
+      border-radius: 22px;
+      border: 1px solid var(--border);
+      background: rgba(10, 19, 34, 0.88);
+    }
+
+    .subject-card header,
+    .chapter-meta,
+    .metric-row,
+    .footer-card header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 14px 0 0;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: rgba(118, 183, 255, 0.1);
+      border: 1px solid rgba(118, 183, 255, 0.2);
+      color: #d8ebff;
+      font-size: 12px;
+    }
+
+    .subject-card ul,
+    .chapter-panel ul,
+    .footer-card ul {
+      margin: 14px 0 0;
+      padding-left: 18px;
+      color: #d7e5fb;
+      line-height: 1.6;
+    }
+
+    .subject-card li + li,
+    .chapter-panel li + li,
+    .footer-card li + li {
+      margin-top: 8px;
+    }
+
+    .subject-card .status {
+      padding: 7px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      color: #09111d;
+      font-weight: 700;
+    }
+
+    .physical {
+      background: var(--blue);
+    }
+
+    .organic {
+      background: var(--cyan);
+    }
+
+    .inorganic {
+      background: var(--gold);
+    }
+
+    .chapter-shell {
+      display: grid;
+      gap: 14px;
+      grid-template-columns: 280px minmax(0, 1fr);
+    }
+
+    .chapter-nav {
+      display: grid;
+      gap: 10px;
+    }
+
+    .chapter-tab {
+      width: 100%;
+      padding: 16px;
+      text-align: left;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .chapter-tab strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 16px;
+    }
+
+    .chapter-tab span {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .chapter-tab[aria-selected="true"] {
+      background: linear-gradient(180deg, rgba(118, 183, 255, 0.2), rgba(79, 224, 208, 0.12));
+      border-color: rgba(118, 183, 255, 0.34);
+    }
+
+    .chapter-panel {
+      display: none;
+      gap: 16px;
+    }
+
+    .chapter-panel.active {
+      display: grid;
+    }
+
+    .chapter-panel p {
+      color: #d6e5ff;
+      line-height: 1.6;
+    }
+
+    .card-stack {
+      display: grid;
+      gap: 12px;
+    }
+
+    .micro-card {
+      padding: 14px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(171, 201, 255, 0.12);
+    }
+
+    .micro-card p {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .practice-grid,
+    .revision-grid,
+    .progress-grid,
+    .loop-grid,
+    .footer-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .practice-card h3,
+    .revision-card h3,
+    .progress-card h3,
+    .loop-card h3,
+    .footer-card h3 {
+      margin-bottom: 12px;
+    }
+
+    .practice-card p,
+    .revision-card p,
+    .progress-card p,
+    .loop-card p,
+    .footer-card p {
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    details {
+      margin-top: 12px;
+      border-radius: 16px;
+      border: 1px solid rgba(171, 201, 255, 0.14);
+      background: rgba(255, 255, 255, 0.03);
+      overflow: hidden;
+    }
+
+    summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 14px;
+      font-weight: 700;
+    }
+
+    summary::-webkit-details-marker {
+      display: none;
+    }
+
+    details div {
+      padding: 0 14px 14px;
+      color: #d8e8ff;
+      line-height: 1.55;
+    }
+
+    .metric-row {
+      margin-bottom: 10px;
+    }
+
+    .bar {
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      overflow: hidden;
+    }
+
+    .bar span {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #7ebeff, #4fe0d0);
+    }
+
+    .loop-card {
+      background: linear-gradient(180deg, rgba(15, 28, 48, 0.94), rgba(9, 18, 33, 0.92));
+    }
+
+    footer {
+      margin-top: 18px;
+    }
+
+    .footer-grid {
+      grid-template-columns: minmax(0, 1.3fr) repeat(2, minmax(0, 1fr));
+    }
+
+    .footer-card strong {
+      color: var(--text);
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    @media (max-width: 960px) {
+      .hero,
+      .chapter-shell,
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .subject-grid,
+      .practice-grid,
+      .revision-grid,
+      .progress-grid,
+      .loop-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 680px) {
+      .page {
+        width: min(100vw - 20px, 1120px);
+        padding-top: 10px;
+      }
+
+      .topbar,
+      .section-head {
+        align-items: start;
+        flex-direction: column;
+      }
+
+      .stat-grid,
+      .subject-grid,
+      .practice-grid,
+      .revision-grid,
+      .progress-grid,
+      .loop-grid,
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .panel,
+      .subject-card,
+      .practice-card,
+      .revision-card,
+      .progress-card,
+      .loop-card,
+      .footer-card,
+      .chapter-tab,
+      .chapter-panel {
+        padding: 16px;
+      }
+
+      h1 {
+        font-size: 34px;
+      }
+
+      .lead {
+        font-size: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <a class="brand" href="#home">
+        <strong>CHEM</strong>
+        <span>JEE Main Chemistry Prototype</span>
+      </a>
+      <nav class="nav" aria-label="Primary">
+        <a href="#syllabus">Syllabus</a>
+        <a href="#chapter">Chapter</a>
+        <a href="#practice">Practice</a>
+        <a href="#revision">Revision</a>
+        <a href="#progress">Progress</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero" id="home">
+        <article class="panel">
+          <div class="eyebrow">Focused Study Loop</div>
+          <h1>Ace JEE Main Chemistry with one clean learn-practice-revise flow.</h1>
+          <p class="lead">
+            CHEM is designed as a serious Chemistry companion, not a noisy coaching portal. This prototype shows a student how to move from syllabus selection to chapter study, practice, revision, and next-step guidance in one place.
+          </p>
+          <div class="cta-row">
+            <a class="cta" href="#chapter">Open Mole Concept</a>
+            <a class="secondary" href="#syllabus">Browse the syllabus map</a>
+          </div>
+          <div class="hero-note">
+            <div><strong>Prototype promise:</strong> one chapter is built to near-finished depth so the full CHEM model can be judged on clarity, usefulness, and mobile usability.</div>
+            <div><strong>First-release stance:</strong> exam relevance, explanation quality, and progress guidance matter more than feature count.</div>
+          </div>
+        </article>
+
+        <aside class="hero-side">
+          <div class="stat-grid">
+            <div class="stat">
+              <small>Prototype scope</small>
+              <strong>6</strong>
+              <p>Core surfaces: home, syllabus, chapter, practice, revision, progress.</p>
+            </div>
+            <div class="stat">
+              <small>Wave 1 focus</small>
+              <strong>12</strong>
+              <p>Priority chapters mapped for Physical, Organic, and Inorganic Chemistry.</p>
+            </div>
+            <div class="stat">
+              <small>Spotlight chapter</small>
+              <strong>Mole</strong>
+              <p>High-yield foundational chapter with notes, traps, formulas, and questions.</p>
+            </div>
+            <div class="stat">
+              <small>Mobile bar</small>
+              <strong>360 px</strong>
+              <p>The layout stays readable and tappable at small-phone widths.</p>
+            </div>
+          </div>
+          <div class="panel">
+            <span class="label">Student Snapshot</span>
+            <h3>Today’s recommended move</h3>
+            <p class="lead" style="margin-top:10px; font-size:15px; max-width:none;">
+              Finish the Mole Concept note stack, attempt the 5-question drill, then revise concentration formulas before moving to Atomic Structure.
+            </p>
+            <div class="pill-row">
+              <span class="pill">Accuracy target: 70%+</span>
+              <span class="pill">Weak skill: unit conversion</span>
+              <span class="pill">Next chapter: Atomic Structure</span>
+            </div>
+          </div>
+        </aside>
+      </section>
+
+      <section id="syllabus">
+        <div class="section-head">
+          <div>
+            <span class="label">Syllabus Map</span>
+            <h2>Organized by the way students actually navigate the exam.</h2>
+          </div>
+          <p>
+            The prototype keeps the syllabus visible, grouped into Physical, Organic, and Inorganic Chemistry, with chapter status, difficulty cues, and weightage notes so students know where to start.
+          </p>
+        </div>
+        <div class="subject-grid">
+          <article class="subject-card">
+            <header>
+              <div>
+                <span class="label">Physical Chemistry</span>
+                <h3>Build the numerical base</h3>
+              </div>
+              <span class="status physical">In Study</span>
+            </header>
+            <ul>
+              <li><strong>Mole Concept</strong> · High weightage · Studying now</li>
+              <li><strong>Atomic Structure</strong> · Foundation · Next up</li>
+              <li><strong>Equilibrium</strong> · Moderate-high weightage · Needs revision</li>
+              <li><strong>Thermodynamics</strong> · Standard JEE Main level</li>
+            </ul>
+            <div class="pill-row">
+              <span class="pill">Skill: numericals</span>
+              <span class="pill">Trap: units</span>
+              <span class="pill">Priority: Wave 1</span>
+            </div>
+          </article>
+
+          <article class="subject-card">
+            <header>
+              <div>
+                <span class="label">Organic Chemistry</span>
+                <h3>Follow logic, not memorization</h3>
+              </div>
+              <span class="status organic">Queued</span>
+            </header>
+            <ul>
+              <li><strong>Basic Principles of Organic Chemistry</strong> · Foundation</li>
+              <li><strong>Hydrocarbons</strong> · High yield · Reaction maps planned</li>
+              <li><strong>Oxygen-Containing Compounds</strong> · Needs examples</li>
+              <li><strong>Amines</strong> · Future expansion</li>
+            </ul>
+            <div class="pill-row">
+              <span class="pill">Skill: mechanism cues</span>
+              <span class="pill">Focus: reaction maps</span>
+              <span class="pill">Priority: Wave 2</span>
+            </div>
+          </article>
+
+          <article class="subject-card">
+            <header>
+              <div>
+                <span class="label">Inorganic Chemistry</span>
+                <h3>Exceptions made easy to revise</h3>
+              </div>
+              <span class="status inorganic">Planned</span>
+            </header>
+            <ul>
+              <li><strong>Periodic Classification</strong> · Foundation</li>
+              <li><strong>Chemical Bonding</strong> · High value bridge chapter</li>
+              <li><strong>Coordination Compounds</strong> · Revision-heavy</li>
+              <li><strong>d- and f-Block</strong> · Exception bank required</li>
+            </ul>
+            <div class="pill-row">
+              <span class="pill">Skill: trend spotting</span>
+              <span class="pill">Need: exception cards</span>
+              <span class="pill">Priority: Wave 2</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="chapter">
+        <div class="section-head">
+          <div>
+            <span class="label">Chapter Surface</span>
+            <h2>One fully explained chapter flow: Mole Concept.</h2>
+          </div>
+          <p>
+            This prototype demonstrates the approved end-to-end chapter experience: chapter promise, concept blocks, quick formulas, common mistakes, and direct paths into practice and revision.
+          </p>
+        </div>
+        <div class="chapter-shell">
+          <div class="chapter-nav" role="tablist" aria-label="Chapter views">
+            <button class="chapter-tab" id="tab-overview" type="button" role="tab" aria-controls="panel-overview" aria-selected="true">
+              <strong>Overview</strong>
+              <span>Understand what this chapter unlocks and where students lose marks.</span>
+            </button>
+            <button class="chapter-tab" id="tab-formulas" type="button" role="tab" aria-controls="panel-formulas" aria-selected="false">
+              <strong>Formula Deck</strong>
+              <span>Quick formulas, unit notes, and trigger conditions for standard JEE Main questions.</span>
+            </button>
+            <button class="chapter-tab" id="tab-traps" type="button" role="tab" aria-controls="panel-traps" aria-selected="false">
+              <strong>Exam Traps</strong>
+              <span>Common mistakes, shortcut failures, and how to avoid careless errors.</span>
+            </button>
+          </div>
+
+          <article class="chapter-panel active" id="panel-overview" role="tabpanel" aria-labelledby="tab-overview">
+            <div class="chapter-meta">
+              <div>
+                <span class="label">Mole Concept</span>
+                <h3>Chapter promise</h3>
+              </div>
+              <div class="pill-row">
+                <span class="pill">Difficulty: Foundation</span>
+                <span class="pill">Question style: Numerical + logic</span>
+              </div>
+            </div>
+            <p>
+              By the end of this chapter, a student should be able to convert between moles, particles, mass, and gas volume; identify the correct stoichiometric relationship; and avoid unit slips in concentration-based problems.
+            </p>
+            <div class="card-stack">
+              <div class="micro-card">
+                <h4>What JEE Main usually asks</h4>
+                <p>Direct mole conversions, limiting reagent checks, empirical formula logic, and concentration problems that punish unit confusion.</p>
+              </div>
+              <div class="micro-card">
+                <h4>Prerequisites</h4>
+                <p>Comfort with ratios, powers of ten, and unit consistency. The prototype flags these before advanced practice begins.</p>
+              </div>
+              <div class="micro-card">
+                <h4>Next best step</h4>
+                <p>Complete the starter practice set, then revise concentration formulas if the summary shows weak accuracy in solution chemistry questions.</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="chapter-panel" id="panel-formulas" role="tabpanel" aria-labelledby="tab-formulas">
+            <div class="chapter-meta">
+              <div>
+                <span class="label">Quick Revision</span>
+                <h3>High-yield formula deck</h3>
+              </div>
+              <div class="pill-row">
+                <span class="pill">Units matter</span>
+                <span class="pill">Use only when conditions fit</span>
+              </div>
+            </div>
+            <ul>
+              <li><strong>n = m / M</strong> for converting mass to moles. Check that the molar mass matches the exact species in the question.</li>
+              <li><strong>Number of particles = n × N<sub>A</sub></strong> for atoms, molecules, or ions. Identify what the question is counting before multiplying.</li>
+              <li><strong>Molarity = moles of solute / volume of solution in liters</strong>. Milliliters must be converted to liters first.</li>
+              <li><strong>At STP, 1 mole of an ideal gas occupies 22.4 L</strong>. Do not use this shortcut when temperature or pressure is explicitly changed.</li>
+            </ul>
+            <div class="micro-card">
+              <h4>Fast trigger rule</h4>
+              <p>If the question mentions density, solution volume, or percent composition, write down units first before applying a mole formula. This prevents most prototype-level mistakes.</p>
+            </div>
+          </article>
+
+          <article class="chapter-panel" id="panel-traps" role="tabpanel" aria-labelledby="tab-traps">
+            <div class="chapter-meta">
+              <div>
+                <span class="label">Common Mistakes</span>
+                <h3>Where students lose easy marks</h3>
+              </div>
+              <div class="pill-row">
+                <span class="pill">Careless errors</span>
+                <span class="pill">Stoichiometry slips</span>
+              </div>
+            </div>
+            <ul>
+              <li><strong>Default rule:</strong> use the given mass directly. <strong>Break condition:</strong> the question hides the actual reacting species in a hydrate or mixture. <strong>Exam consequence:</strong> wrong mole count from the first line.</li>
+              <li><strong>Default rule:</strong> divide by molar mass. <strong>Break condition:</strong> the prompt asks for atoms or ions, not molecules. <strong>Exam consequence:</strong> missing the species multiplication factor.</li>
+              <li><strong>Default rule:</strong> use 22.4 L at STP. <strong>Break condition:</strong> temperature and pressure are not standard. <strong>Exam consequence:</strong> shortcut gives a clean but incorrect option.</li>
+              <li><strong>Default rule:</strong> plug volume into molarity directly. <strong>Break condition:</strong> the value is in mL. <strong>Exam consequence:</strong> answer off by a factor of 1000.</li>
+            </ul>
+            <div class="micro-card">
+              <h4>Prototype teaching cue</h4>
+              <p>The full product should attach these traps to practice explanations and to the revision checklist so the student sees the same warning twice.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="practice">
+        <div class="section-head">
+          <div>
+            <span class="label">Practice Experience</span>
+            <h2>Short drills with instant explanations.</h2>
+          </div>
+          <p>
+            The prototype does not need a huge bank. It needs a small, trustworthy set of exam-style questions with explanations that teach, not just mark right or wrong.
+          </p>
+        </div>
+        <div class="practice-grid">
+          <article class="practice-card">
+            <span class="label">Question 1 · Foundation</span>
+            <h3>How many moles are present in 18 g of water?</h3>
+            <p>Use molar mass carefully and confirm the question asks for moles of molecules.</p>
+            <details>
+              <summary>Show answer and explanation</summary>
+              <div>
+                <strong>Answer:</strong> 1 mole.<br>
+                <strong>Why:</strong> Molar mass of water is 18 g mol<sup>-1</sup>. So n = 18 / 18 = 1. The prototype explanation surfaces the governing formula first, then the substitution.
+              </div>
+            </details>
+          </article>
+
+          <article class="practice-card">
+            <span class="label">Question 2 · Standard</span>
+            <h3>What is the number of molecules in 0.5 mole of CO<sub>2</sub>?</h3>
+            <p>Translate moles into particles using Avogadro's number, but keep the target species in view.</p>
+            <details>
+              <summary>Show answer and explanation</summary>
+              <div>
+                <strong>Answer:</strong> 3.011 × 10<sup>23</sup> molecules.<br>
+                <strong>Why:</strong> Molecules = 0.5 × 6.022 × 10<sup>23</sup>. The common distractor is counting atoms instead of molecules.
+              </div>
+            </details>
+          </article>
+
+          <article class="practice-card">
+            <span class="label">Question 3 · Trap Check</span>
+            <h3>What is the molarity of a solution containing 0.25 mol solute in 250 mL solution?</h3>
+            <p>This is a classic unit-conversion mistake detector.</p>
+            <details>
+              <summary>Show answer and explanation</summary>
+              <div>
+                <strong>Answer:</strong> 1.0 M.<br>
+                <strong>Why:</strong> Convert 250 mL to 0.250 L first. Then molarity = 0.25 / 0.250 = 1.0. The prototype explanation explicitly names the unit trap before solving.
+              </div>
+            </details>
+          </article>
+        </div>
+      </section>
+
+      <section id="revision">
+        <div class="section-head">
+          <div>
+            <span class="label">Revision Hub</span>
+            <h2>Make weak areas visible enough to revisit quickly.</h2>
+          </div>
+          <p>
+            Revision in CHEM is not only a formula dump. It combines quick facts, error recall, and a clear recommendation for what to retry next.
+          </p>
+        </div>
+        <div class="revision-grid">
+          <article class="revision-card">
+            <h3>Flash Card Stack</h3>
+            <p>Remember the exact condition before using a shortcut formula.</p>
+            <details>
+              <summary>Card 1 · Gas volume shortcut</summary>
+              <div>22.4 L per mole works only at STP. If the question changes temperature or pressure, switch to the gas law instead of forcing the shortcut.</div>
+            </details>
+            <details>
+              <summary>Card 2 · Counting species</summary>
+              <div>If the prompt asks for atoms, ions, or electrons, convert from molecules using the composition of the species before applying Avogadro's number.</div>
+            </details>
+          </article>
+
+          <article class="revision-card">
+            <h3>Mistake Log</h3>
+            <p>The product should preserve the exact type of error so revision is targeted.</p>
+            <ul>
+              <li>Missed a molarity question by using mL instead of liters.</li>
+              <li>Picked the wrong option when counting atoms instead of molecules.</li>
+              <li>Skipped unit cancellation in a concentration conversion.</li>
+            </ul>
+          </article>
+
+          <article class="revision-card">
+            <h3>Recommended Next Action</h3>
+            <p>Students should not have to guess what comes after a practice set.</p>
+            <div class="pill-row">
+              <span class="pill">Retry 2 unit-based questions</span>
+              <span class="pill">Review formula deck</span>
+              <span class="pill">Start Atomic Structure tomorrow</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="progress">
+        <div class="section-head">
+          <div>
+            <span class="label">Progress Snapshot</span>
+            <h2>Simple signals that tell the student what to do next.</h2>
+          </div>
+          <p>
+            The prototype keeps analytics lightweight. The goal is to prove that CHEM can show movement, expose weak concepts, and suggest the most useful next step without overwhelming the user.
+          </p>
+        </div>
+        <div class="progress-grid">
+          <article class="progress-card">
+            <h3>Accuracy by chapter</h3>
+            <div class="metric-row"><strong>Mole Concept</strong><span class="muted">72%</span></div>
+            <div class="bar"><span style="width:72%"></span></div>
+            <div class="metric-row" style="margin-top:14px;"><strong>Atomic Structure</strong><span class="muted">Not started</span></div>
+            <div class="bar"><span style="width:8%"></span></div>
+          </article>
+
+          <article class="progress-card">
+            <h3>Weak concepts</h3>
+            <p>Unit conversion, solution volume handling, and species counting are the three weakest skills from the current practice set.</p>
+            <div class="pill-row">
+              <span class="pill">Unit conversions</span>
+              <span class="pill">Particle counting</span>
+              <span class="pill">Concentration setup</span>
+            </div>
+          </article>
+
+          <article class="progress-card">
+            <h3>Study recommendation</h3>
+            <p>Finish one more Mole Concept drill today, then move into Atomic Structure only after unit-based accuracy stays above 80% across two short sets.</p>
+          </article>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-head">
+          <div>
+            <span class="label">Why This Prototype</span>
+            <h2>The first version proves the loop before the platform grows.</h2>
+          </div>
+          <p>
+            The full mission is large. This prototype intentionally stays narrow enough to test whether students understand the value proposition, can navigate the syllabus, and benefit from a clear chapter-to-practice-to-revision loop.
+          </p>
+        </div>
+        <div class="loop-grid">
+          <article class="loop-card">
+            <h3>1. Learn</h3>
+            <p>Study a concise chapter page with concept blocks, formula notes, and exam-oriented teaching instead of textbook sprawl.</p>
+          </article>
+          <article class="loop-card">
+            <h3>2. Practice</h3>
+            <p>Attempt a small set of well-explained questions that reinforce concept selection and expose common errors.</p>
+          </article>
+          <article class="loop-card">
+            <h3>3. Revise + Track</h3>
+            <p>Review mistake-linked flash cards and see the next best study action from lightweight progress signals.</p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="footer-grid">
+        <article class="footer-card">
+          <header>
+            <div>
+              <span class="label">Prototype Readiness</span>
+              <h3>What this package is ready for</h3>
+            </div>
+          </header>
+          <p>
+            This static prototype is suitable for GitHub Pages once repository access is available. It keeps the experience simple so a reviewer can open one file and judge the full product story quickly.
+          </p>
+        </article>
+        <article class="footer-card">
+          <h3>Included now</h3>
+          <ul>
+            <li>Mission-aligned home page</li>
+            <li>Syllabus map across all three chemistry branches</li>
+            <li>Detailed Mole Concept chapter surface</li>
+            <li>Practice, revision, and progress sections</li>
+          </ul>
+        </article>
+        <article class="footer-card">
+          <h3>Next buildouts</h3>
+          <ul>
+            <li>Additional authored Wave 1 chapters</li>
+            <li>Larger practice bank with filters</li>
+            <li>Persistent student progress state</li>
+            <li>Error-reporting and freshness signals</li>
+          </ul>
+        </article>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    const tabs = Array.from(document.querySelectorAll(".chapter-tab"));
+    const panels = Array.from(document.querySelectorAll(".chapter-panel"));
+
+    function activateTab(targetId) {
+      tabs.forEach((tab) => {
+        const selected = tab.id === targetId;
+        tab.setAttribute("aria-selected", selected ? "true" : "false");
+      });
+
+      panels.forEach((panel) => {
+        panel.classList.toggle("active", panel.getAttribute("aria-labelledby") === targetId);
+      });
+    }
+
+    tabs.forEach((tab) => {
+      tab.addEventListener("click", () => activateTab(tab.id));
+    });
+  </script>
+</body>
+</html>
